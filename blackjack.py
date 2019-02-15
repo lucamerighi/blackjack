@@ -1,4 +1,7 @@
-import tkinter as tk
+try:
+    import tkinter as tk
+except ImportError:
+    import Tkinter as tk
 import random
 
 def load_cards():
