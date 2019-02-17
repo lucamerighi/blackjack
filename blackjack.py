@@ -67,9 +67,11 @@ def deal_player():
         result_text.set('Dealer Won!')
         card_btn.config(state='disabled')
         stop_btn.config(state='disabled')
+        dealer_wins.set(dealer_wins.get() + 1)
 
 # Adds cards to the dealer frame until soft 17
 def deal_dealer():
+    global player_wins, dealer_wins
     card_btn.config(state='disabled')
     score = score_hand(dealer_hand)
     while score < 17:
@@ -78,12 +80,15 @@ def deal_dealer():
         dealer_score.set(score)
     if score > 21:
         result_text.set('Player Won!')
+        player_wins.set(player_wins.get() + 1)
     elif score > int(player_score.get()):
         result_text.set('Dealer Won!')
+        dealer_wins.set(dealer_wins.get() + 1)
     elif score == int(player_score.get()):
         result_text.set('Draw!')
     else:
         result_text.set('Player Won!')
+        player_wins.set(player_wins.get() + 1)
 
 # Calculates the score of a hand
 def score_hand(hand):
@@ -104,8 +109,6 @@ def score_hand(hand):
 def new_game():
     global dealer_card_frame
     global player_card_frame
-    global dealer_hand
-    global player_hand
     dealer_card_frame.destroy()
     dealer_card_frame = tk.Frame(center_frame, background='green')
     dealer_card_frame.grid(row=0, column=1, sticky='ew', rowspan=2)
@@ -117,8 +120,8 @@ def new_game():
     card_btn.config(state='normal')
     stop_btn.config(state='normal')
 
-    player_hand = []
-    dealer_hand = []
+    player_hand.clear()
+    dealer_hand.clear()
 
     deck = list(cards)
     random.shuffle(deck)
@@ -138,6 +141,20 @@ stop_btn.grid(row = 0, column=1)
 new_game_btn = tk.Button(btn_frame, text='New Game', command=new_game)
 new_game_btn.grid(row=0, column=2)
 
+# Wins
+wins_frame = tk.Frame(root, bg='green')
+wins_frame.grid(row=4, column=0, sticky='w')
+player_wins = tk.IntVar()
+dealer_wins = tk.IntVar()
+player_wins.set(0)
+dealer_wins.set(0)
+tk.Label(wins_frame, text='Dealer Wins: ', bg='green').grid(row=0, column=0)
+dealer_wins_label = tk.Label(wins_frame, textvariable=dealer_wins, bg='green')
+dealer_wins_label.grid(row=0, column=1)
+tk.Label(wins_frame, text='Player Wins: ', bg='green').grid(row=0, column=2)
+player_wins_label = tk.Label(wins_frame, textvariable=player_wins, bg='green')
+player_wins_label.grid(row=0, column=3)
+
 for btn in btn_frame.winfo_children():
     btn.grid_configure(padx=5, pady=10)
 
@@ -155,4 +172,3 @@ dealer_hand = []
 
 new_game()
 root.mainloop()
-
