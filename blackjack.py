@@ -1,3 +1,5 @@
+#! /usr/bin/python3
+
 try:
     import tkinter as tk
 except ImportError:
@@ -90,6 +92,7 @@ def deal_dealer():
         result_text.set('Player Won!')
         player_wins.set(player_wins.get() + 1)
 
+
 # Calculates the score of a hand
 def score_hand(hand):
     has_ace = False
@@ -104,6 +107,7 @@ def score_hand(hand):
             score -= 10
             has_ace = False
     return score
+
 
 # Resets the board
 def new_game():
